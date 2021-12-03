@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "sample-server"
+version = "0.1.0"
+description = ""
+authors = ["Taro Abe <tarofuku827@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.70.0"
+uvicorn = "^0.15.0"
+gunicorn = "^20.1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mypy = "^0.910"
+black = "^21.11b1"
+flake8 = "^4.0.1"
+taskipy = "^1.9.0"
+
+[tool.taskipy.tasks]
+test = { cmd = "pytest tests", help = "runs all unit tests." }
+pr_test = "task lint"
+fmt = { cmd = "black tests sample_server", help = "format code" }
+lint = { cmd = "task lint_black && task lint_flake8 && lint_mypy", help = "exec lint" }
+lint_black = "black --check tests sample_server"
+lint_flake8 = "flake8 --max-line-length=88 tests sample_server"
+lint_mypy = "mypy tests sample_server"
+start = { cmd = "uvicorn sample_server.main:app --reload", help = "launch test sever" }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
